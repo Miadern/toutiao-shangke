@@ -1,6 +1,5 @@
 <template>
   <div>
-    布局页面
     <router-view></router-view>
     <van-tabbar route>
       <van-tabbar-item icon="home-o" to="/ ">
@@ -24,7 +23,8 @@
       <van-tabbar-item icon="home-o" to="/profile">
         <template #icon>
           <span class="iconfont icon-wode"></span>
-          <span class="text">我的</span>
+          <span class="text" v-if="isLogin">我的</span>
+          <span class="text" v-else>未登录</span>
         </template>
       </van-tabbar-item>
     </van-tabbar>
@@ -32,7 +32,13 @@
 </template>
 
 <script>
-export default {}
+export default {
+  computed: {
+    isLogin() {
+      return !!this.$store.state.user.token
+    }
+  }
+}
 </script>
 
 <style scoped lang="less">
