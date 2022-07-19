@@ -5,6 +5,7 @@ const request = axios.create({
   baseURL: 'http://toutiao.itheima.net',
   timeout: 4000
 })
+
 request.interceptors.request.use(
   (config) => {
     if (store.state.user.token) {
