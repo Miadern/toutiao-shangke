@@ -17,7 +17,12 @@
     <!--   <searchHistoryVue></searchHistoryVue>
     <searchSuggestionVue></searchSuggestionVue>
     <searchResultVue></searchResultVue> -->
-    <component :is="componentName" :keyswords="keywords"></component>
+    <component
+      :is="componentName"
+      :keyswords="keywords"
+      :searchWords="keywords"
+      @sendSuggestion="sendSuggestionFn"
+    ></component>
   </div>
 </template>
 
@@ -51,8 +56,11 @@ export default {
   },
   methods: {
     // 点击触发搜索
-    onSearch(val) {
+    onSearch() {
+      // 显示搜索结果的组件
       this.isShowSearchResult = true
+      // 将搜索的关键词存入vueX
+      this.$store.commit('setHistory', this.keywords)
     },
     // 头部搜索点击返回上一页
     onCancel() {
@@ -61,6 +69,11 @@ export default {
     // 搜索栏获得焦点的时候
     onFocus() {
       this.isShowSearchResult = false
+    },
+    // 点击搜索建议传来的value
+    sendSuggestionFn(val) {
+      this.keywords = val
+      this.onSearch()
     }
   }
 }

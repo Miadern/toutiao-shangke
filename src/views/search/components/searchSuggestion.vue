@@ -4,6 +4,7 @@
       icon="search"
       v-for="(item, index) in hightLightSuggest"
       :key="index"
+      @click="clickSuggestion(index)"
     >
       <template #title> <span v-html="item"></span> </template>
     </van-cell>
@@ -47,7 +48,6 @@ export default {
     async getSearchSuggestion() {
       try {
         const { data } = await getSearchSuggestion(this.keyswords)
-        console.log(data.data)
         if (data.data.options.length === 0 || data.data.options[0] === null) {
           return (this.Suggestion = ['暂无数据'])
         }
@@ -55,6 +55,10 @@ export default {
       } catch (error) {
         console.log(error)
       }
+    },
+    // 点击搜索建议触发搜索结果
+    clickSuggestion(index) {
+      this.$emit('sendSuggestion', this.Suggestion[index])
     }
   }
 }

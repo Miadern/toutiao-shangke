@@ -3,6 +3,11 @@ import VueRouter from 'vue-router'
 
 Vue.use(VueRouter)
 
+const originalPush = VueRouter.prototype.push
+
+VueRouter.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch((err) => err)
+}
 const routes = [
   {
     path: '/',
@@ -34,6 +39,11 @@ const routes = [
   {
     path: '/search',
     component: () => import('@/views/search')
+  },
+  {
+    path: '/detail/:id',
+    name: 'detail',
+    component: () => import('@/views/detail')
   }
 ]
 
