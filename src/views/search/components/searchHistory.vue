@@ -9,7 +9,11 @@
       </div>
       <van-icon name="delete-o" @click="delFn" v-else />
     </van-cell>
-    <van-cell :title="item" v-for="(item, index) in historyList" :key="index"
+    <van-cell
+      :title="item"
+      v-for="(item, index) in historyList"
+      :key="index"
+      @click="sendVal(item)"
       ><van-icon name="close" v-if="isShowDelIcon" @click="delItemFn(index)"
     /></van-cell>
   </div>
@@ -43,6 +47,10 @@ export default {
     // 点击删除单个
     delItemFn(index) {
       this.$store.commit('removeItemHistory', index)
+    },
+    // 点击搜索内容
+    sendVal(val) {
+      this.$emit('sendSuggestion', val)
     }
   }
 }
