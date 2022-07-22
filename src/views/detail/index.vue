@@ -77,7 +77,7 @@ import {
   CancelCollectionArt,
   sendComments
 } from '@/api'
-import articleVue from './components/article.vue'
+import articleVue from '@/views/detail/components/article.vue'
 
 export default {
   components: {
