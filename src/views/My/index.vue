@@ -28,6 +28,7 @@
                 size="mini"
                 round
                 native-type="button"
+                @click="goInfo"
                 >编辑资料
               </van-button>
             </van-row>
@@ -112,6 +113,12 @@ export default {
     }
   },
   methods: {
+    // 去编辑
+    goInfo() {
+      this.$router.push({
+        name: 'user'
+      })
+    },
     exitFn() {
       this.$dialog
         .confirm({

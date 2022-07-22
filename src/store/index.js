@@ -25,8 +25,10 @@ export default new Vuex.Store({
         localStorage.setItem('HEIMA_TOUTIAO_HISTORY', JSON.stringify([]))
       }
       // 取出本地的数组添加内容
-      const res = JSON.parse(localStorage.getItem('HEIMA_TOUTIAO_HISTORY'))
-      res.push(payload)
+      let res = JSON.parse(localStorage.getItem('HEIMA_TOUTIAO_HISTORY'))
+      res.unshift(payload)
+      // 去重
+      res = [...new Set(res)]
       // 赋予history
       state.history = res
       // 放回本地

@@ -34,7 +34,11 @@
     <van-divider class="foott">正文结束</van-divider>
 
     <!-- 评论 -->
-    <commentItemVue :List="commentListC"></commentItemVue>
+    <commentItemVue
+      :List="commentListC"
+      :artIdFin="artId"
+      ref="child2"
+    ></commentItemVue>
   </div>
 </template>
 

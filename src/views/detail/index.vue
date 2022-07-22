@@ -11,7 +11,11 @@
     <!-- 文章组件 -->
     <!-- div包一下给个底部高度 -->
     <div class="bottom">
-      <articleVue :artId="id" :commentListC="commentList"></articleVue>
+      <articleVue
+        :artId="id"
+        :commentListC="commentList"
+        ref="child1"
+      ></articleVue>
     </div>
 
     <!-- 底部 -->
@@ -124,13 +128,16 @@ export default {
     // 发送评论
     async sendComment() {
       try {
-        this.toast = this.$toast.loading({
+        this.$toast.loading({
           duration: 0, // 持续展示 toast
           forbidClick: true,
           message: '加载中...'
         })
         await sendComments(this.id, this.message)
+        this.showcomment = false
         this.$toast.success('评论成功！')
+        // 调用刷新页面
+        this.$refs.child1.$refs.child2.getComments()
       } catch (error) {
         if (error.response.status === 401) {
           return this.$toast.fail('登陆超时，请重新登录')
@@ -139,8 +146,6 @@ export default {
         } else {
           return this.$toast.fail('评论失败！')
         }
-      } finally {
-        this.toast.clear()
       }
     },
     // 弹出评论栏
