@@ -12,6 +12,9 @@ import 'vant/lib/index.css'
 
 // 引入amfe flexible
 import 'amfe-flexible/index.min.js'
+import VueImageCutting from 'vue-image-cutting'
+import 'vue-image-cutting/lib/VueImageCutting.css'
+Vue.use(VueImageCutting)
 
 // 默认
 Vue.config.productionTip = false
