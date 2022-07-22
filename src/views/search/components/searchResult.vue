@@ -62,7 +62,7 @@ export default {
           this.per_page
         )
         this.searchList = data.data.results
-        console.log(data.data.results)
+        // console.log(data.data.results)
       } catch (error) {
         this.$toast.fail('查询失败请重试')
         console.log(error)

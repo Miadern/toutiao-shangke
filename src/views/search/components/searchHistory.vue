@@ -13,7 +13,7 @@
       :title="item"
       v-for="(item, index) in historyList"
       :key="index"
-      @click="sendVal(item)"
+      @click="sendVal(item, index)"
       ><van-icon name="close" v-if="isShowDelIcon" @click="delItemFn(index)"
     /></van-cell>
   </div>
@@ -44,16 +44,20 @@ export default {
     delALLFn() {
       this.$store.commit('removeAllHistory')
     },
-    // 点击删除单个
+    // 点击删除单个***已废弃
     delItemFn(index) {
       this.$store.commit('removeItemHistory', index)
     },
     // 点击搜索内容
-    sendVal(val) {
+    sendVal(val, index) {
+      if (this.isShowDelIcon) {
+        this.$store.commit('removeItemHistory', index)
+        return
+      }
       this.$emit('sendSuggestion', val)
     }
   }
 }
 </script>
 
-<style></style>
+<style lang="less"></style>
