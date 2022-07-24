@@ -19,7 +19,15 @@
             >
           </div>
         </div>
-        <span class="goodJob"><van-icon name="good-job-o" />赞</span>
+        <span
+          class="goodJob"
+          @click="likingsThis(item.com_id, item.is_liking)"
+          :style="{ color: item.is_liking ? 'blue' : 'black' }"
+          ><van-icon
+            name="good-job-o"
+            :style="{ color: item.is_liking ? 'blue' : 'black' }"
+          />赞</span
+        >
       </div>
     </van-list>
     <!-- 弹出层 -->
@@ -46,7 +54,14 @@
               <span class="hui">回复 {{ itemTop.reply_count }}</span>
             </div>
           </div>
-          <span class="goodJob"><van-icon name="good-job-o" />赞</span>
+          <span
+            class="goodJob"
+            :style="{ color: itemTop.is_liking ? 'blue' : 'black' }"
+            ><van-icon
+              name="good-job-o"
+              :style="{ color: itemTop.is_liking ? 'blue' : 'black' }"
+            />赞</span
+          >
         </div>
         <van-cell value="全部回复" />
         <!-- 评论的评论 -->
@@ -67,7 +82,15 @@
                 <span class="hui">回复 {{ item.reply_count }}</span>
               </div>
             </div>
-            <span class="goodJob"><van-icon name="good-job-o" />赞</span>
+            <span
+              class="goodJob"
+              @click="likingsThis(item.com_id, item.is_liking)"
+              :style="{ color: item.is_liking ? 'blue' : 'black' }"
+              ><van-icon
+                name="good-job-o"
+                :style="{ color: item.is_liking ? 'blue' : 'black' }"
+              />赞</span
+            >
           </div>
         </van-list>
         <!-- 评论的评论 -->
@@ -106,7 +129,7 @@
 </template>
 
 <script>
-import { getComments, sendComments } from '@/api'
+import { getComments, sendComments, likingsThis, NolikingsThis } from '@/api'
 import dayjs from '@/utils/dayjs'
 export default {
   created() {
@@ -138,7 +161,11 @@ export default {
       itemList: [],
       // 选中评论的对象
       itemTop: {},
-      valId: ''
+      valId: '',
+      // 2级评论ID
+      twoComId: '',
+      // 2级评论是否点赞
+      twoLike: false
     }
   },
   props: {
@@ -155,6 +182,27 @@ export default {
     }
   },
   methods: {
+    // 获取评论的评论
+    async getCommComm(com_id) {
+      // 获取评论的评论
+      const { data } = await getComments('c', this.twoComId)
+      console.log(data)
+      this.itemList = data.data.results
+      // 评论总数的渲染
+    },
+    // 发送点赞
+    async likingsThis(id, flag) {
+      if (flag) {
+        await NolikingsThis(id)
+        this.getCommComm(id)
+        this.getComments()
+      } else {
+        await likingsThis(id)
+        this.getCommComm(id)
+        this.getComments()
+      }
+    },
+
     // 发送评论
     async sendComment() {
       try {
@@ -189,6 +237,9 @@ export default {
       this.poPshow = true
       // 获取单个评论
       this.itemTop = item
+      console.log(this.itemTop)
+      // 2级评论id
+      this.twoComId = item.com_id
       try {
         // 获取评论的评论
         const { data } = await getComments('c', item.com_id)
@@ -203,6 +254,7 @@ export default {
     async getComments() {
       try {
         const { data } = await getComments('a', this.artIdFin)
+        console.log(data)
         this.List = data.data.results
         this.offset = data.data.last_id
         this.end = data.data.end_id

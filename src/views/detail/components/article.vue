@@ -29,7 +29,11 @@
       >
     </div>
     <!-- 主体content部分 -->
-    <div v-html="articleContent.content" class="contentHTML"></div>
+    <div
+      v-html="articleContent.content"
+      class="contentHTML"
+      ref="contentBox"
+    ></div>
     <!-- 结尾部分 -->
     <van-divider class="foott">正文结束</van-divider>
 
@@ -43,6 +47,7 @@
 </template>
 
 <script>
+import { ImagePreview } from 'vant'
 import dayjs from '@/utils/dayjs'
 import {
   getArticleInfo,
@@ -70,6 +75,10 @@ export default {
     // 获取用户关注角色的列表
     this.getfollowUserList()
   },
+  mounted() {
+    // 制作点击预览图片
+    this.watchPic()
+  },
   props: {
     artId: {
       type: String,
@@ -85,6 +94,15 @@ export default {
     } */
   },
   methods: {
+    // 制作点击预览图片
+    watchPic() {
+      this.$refs.contentBox.addEventListener('click', (e) => {
+        if (e.target.nodeName === 'IMG') {
+          ImagePreview([e.target.src])
+        }
+      })
+    },
+
     // 获取关注列表
     async getfollowUserList() {
       try {

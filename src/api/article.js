@@ -116,3 +116,26 @@ export const sendComments = (target, content, art_id) => {
     data: { target, content, art_id }
   })
 }
+/**
+ * 对评论或评论回复点赞
+ * @param {*} target 	点赞的评论id
+ * @returns
+ */
+export const likingsThis = (target) => {
+  return request({
+    method: 'POST',
+    url: '/v1_0/comment/likings',
+    data: { target }
+  })
+}
+/**
+ * 取消对评论或评论回复点赞
+ * @param {*} target
+ * @returns
+ */
+export const NolikingsThis = (target) => {
+  return request({
+    method: 'DELETE',
+    url: `/v1_0/comment/likings/${target}`
+  })
+}
